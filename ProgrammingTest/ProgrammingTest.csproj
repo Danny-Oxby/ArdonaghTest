@@ -64,6 +64,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\CustomerMdl.cs" />
+    <Compile Include="ViewModel\DisplayPageViewModel.cs" />
+    <Compile Include="ViewModel\PageViewModelBase.cs" />
     <Compile Include="Services\ValidationService.cs" />
     <Compile Include="View\DisplayPage.xaml.cs">
       <DependentUpon>DisplayPage.xaml</DependentUpon>
@@ -95,8 +97,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

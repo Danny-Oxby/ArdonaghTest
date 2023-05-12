@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProgrammingTest.Model
 {
-    internal class CustomerMdl
+    public class CustomerMdl
     {
         public CustomerMdl() // default ctor
         {

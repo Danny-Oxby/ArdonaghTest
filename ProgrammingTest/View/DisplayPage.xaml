@@ -7,6 +7,36 @@
         mc:Ignorable="d"
         Title="DisplayPage" Height="450" Width="800">
     <Grid>
+        <!--#region Grid defnintions-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/><!--manual hard border can be done elsewhere but this removes come element complexity-->
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/><!--manual hard border-->
+            <ColumnDefinition Width="auto" MinWidth="250"/>
+            <ColumnDefinition Width="5"/><!--manual hard border-->
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/><!--manual hard border can be done elsewhere but this removes come element complexity-->
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/><!--manual hard border-->
+        </Grid.RowDefinitions>
+        <!--#endregion Grid defnintions-->
+            
+        <!--#region content-->
+        <!--Row 0 is border-->
+        <!--Row 1-->
+
+        <DataGrid Name="CustomerTable" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding CustomerList}"
+                  ColumnWidth="*" CanUserAddRows="False" CanUserDeleteRows="False" SelectedItem="{Binding SelectedCustomer}"
+                  HeadersVisibility="Column" CanUserSortColumns="True" AutoGenerateColumns="True"> <!--set to false an maunal create columns is column header or names need to be changed-->
+        </DataGrid>
+
+        <StackPanel Grid.Column="3" Grid.Row="1">
+            <Button Content="Add" FontWeight="Bold" FontSize="20" Padding="5" Margin="10"/>
+            <Button Content="Edit" FontWeight="Bold" FontSize="20" Padding="5" Margin="10" IsEnabled="{Binding EnableEdit}"/>
+        </StackPanel>
         
+        <!--Row 2 is border-->
+        <!--#endregion content-->
     </Grid>
 </Window>
