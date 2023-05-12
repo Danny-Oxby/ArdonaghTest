@@ -46,6 +46,14 @@ namespace ProgrammingTest.Services
                 string debugmsg = ex.Message;
                 return false; 
             }
+        } // A regex can also be considered for more complex testing
+
+        public static bool HeightValidation(double heightinput) // decimal place number is limited on input
+        {
+            double roundheightinput = Math.Round(heightinput, 2); //convert the input to 2 decimal palces
+
+            if (roundheightinput < 0 || roundheightinput > 2.50) return false; //input meets criteria
+            else return true; //return condition
         }
     }
 }

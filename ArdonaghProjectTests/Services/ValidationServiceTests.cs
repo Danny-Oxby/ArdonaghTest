@@ -32,11 +32,11 @@ namespace ProgrammingTest.Services.Tests
         {
             int agetest = 48;
 
-            Assert.IsTrue(agetest > 0 && agetest <= 110, "Testing value is out of intended scope");
+            Assert.IsTrue(agetest >= 0 && agetest <= 110, "Testing value is out of intended scope");
             Assert.IsTrue(ValidationService.AgeValidation(agetest), "AgeValidationCorrectInputTest Returned False instead of True");
 
             int boundryagetest = 110;
-            Assert.IsTrue(agetest > 0 && agetest <= 110, "Testing boundry value is out of intended scope");
+            Assert.IsTrue(boundryagetest >= 0 && boundryagetest <= 110, "Testing boundry value is out of intended scope");
             Assert.IsTrue(ValidationService.AgeValidation(boundryagetest), "AgeValidationCorrectInputTest boundry Returned False instead of True");
 
         }
@@ -65,6 +65,35 @@ namespace ProgrammingTest.Services.Tests
         [TestMethod()]
         public void PostcodeValidationInCorrectInputTest() { 
             Assert.IsFalse(ValidationService.PostCodeValidation("ASGB UFG"), "PostCodeVaildation Returned True instead of False");
+        }
+        #endregion
+
+        #region age tests
+        [TestMethod()]
+        public void HeightValidationCorrectInputTest()
+        {
+            double hieghttest = 1.48;
+            Assert.IsTrue(hieghttest > 0 && hieghttest <= 2.50, "Testing value is out of intended scope");
+            Assert.IsTrue(ValidationService.HeightValidation(hieghttest), "HeightValidationCorrectInputTest Returned False instead of True");
+
+            double boundryhieghttest = 2.50;
+            Assert.IsTrue(hieghttest > 0 && hieghttest <= 2.50, "Testing boundry value is out of intended scope");
+            Assert.IsTrue(ValidationService.HeightValidation(boundryhieghttest), "HeightValidationCorrectInputTest boundry Returned False instead of True");
+
+        }
+
+        [TestMethod()]
+        public void HeightValidationInCorrectInputTest()
+        {
+            double agetest = -1;
+
+            Assert.IsTrue(agetest < 0, "Testing value is out of intended scope");
+            Assert.IsFalse(ValidationService.HeightValidation(agetest), "HeightValidationInCorrectInputTest Returned True instead of False");
+
+            double boundryagetest = 2.51;
+            Assert.IsTrue(boundryagetest > 2.50, "Testing boundry value is out of intended scope");
+            Assert.IsFalse(ValidationService.HeightValidation(boundryagetest), "HeightValidationInCorrectInputTest boundry Returned True instead of False");
+
         }
         #endregion
     }
