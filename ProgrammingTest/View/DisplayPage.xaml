@@ -25,16 +25,60 @@
         <!--#region content-->
         <!--Row 0 is border-->
         <!--Row 1-->
-
-        <DataGrid Name="CustomerTable" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding CustomerList}"
+        <DataGrid Name="CustomerTable" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding CustomerList}" IsReadOnly="True"
                   ColumnWidth="*" CanUserAddRows="False" CanUserDeleteRows="False" SelectedItem="{Binding SelectedCustomer}"
                   HeadersVisibility="Column" CanUserSortColumns="True" AutoGenerateColumns="True"> <!--set to false an maunal create columns is column header or names need to be changed-->
         </DataGrid>
 
         <StackPanel Grid.Column="3" Grid.Row="1">
-            <Button Content="Add" FontWeight="Bold" FontSize="20" Padding="5" Margin="10"/>
-            <Button Content="Edit" FontWeight="Bold" FontSize="20" Padding="5" Margin="10" IsEnabled="{Binding EnableEdit}"/>
+            <Button Content="Add" FontWeight="Bold" FontSize="20" Padding="5" Margin="10" Command="{Binding Path=AddUserbtn}"/>
+            <Button Content="Edit" FontWeight="Bold" FontSize="20" Padding="5" Margin="10" IsEnabled="{Binding EnableEdit}" Command="{Binding Path=EditUserbtn}"/>
         </StackPanel>
+
+        <Popup Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="500" Height="500"
+               Placement="Relative" IsOpen="{Binding PopupVisibility}">
+            <Grid Background="White">
+                <!--#region grid defnitions-->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <!--#endregion-->
+                
+                <!--#region grid content-->
+                <Label Name="PopupNewOrEdit" Content="{Binding PopupHeader}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+                <Label Content="Name" Grid.Row="2" Grid.Column="0" />
+                <TextBox Text="{Binding NameInput, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" />
+                
+                <Label Content="Age" Grid.Row="3" Grid.Column="0" />
+                <TextBox Text="{Binding AgeInput, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Row="3" Grid.Column="2" />
+
+                <Label Content="Postcode" Grid.Row="4" Grid.Column="0" />
+                <TextBox Text="{Binding PostcodeInput, Mode=TwoWay}" Grid.Row="4" Grid.Column="2" />
+                
+                <Label Content="Height" Grid.Row="5" Grid.Column="0"/>
+                <TextBox Text="{Binding HeightInput, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Row="5" Grid.Column="2" />
+
+                <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Save" FontWeight="Bold" FontSize="14" Padding="5" Margin="10"/>
+                    <Button Content="Cancle" FontWeight="Bold" FontSize="14" Padding="5" Margin="10" Command="{Binding CanclePopupbtn}"/>
+                </StackPanel>
+                <!--#endregion-->
+            </Grid>
+        </Popup>
         
         <!--Row 2 is border-->
         <!--#endregion content-->

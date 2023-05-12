@@ -10,8 +10,8 @@ namespace ProgrammingTest.View
     {
         public DisplayPage()
         {
-            this.DataContext = new DisplayPageViewModel();
             InitializeComponent();
+            this.DataContext = new DisplayPageViewModel();
         }
     }
 }
