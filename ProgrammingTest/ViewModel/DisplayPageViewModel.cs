@@ -2,6 +2,7 @@
 using ProgrammingTest.Model;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,14 +22,14 @@ namespace ProgrammingTest.ViewModel
         public DisplayPageViewModel()
         {
             //bind commands
-            AddUserbtn = new RelayCommand(AddUserbtnExecute, true);
-            EditUserbtn = new RelayCommand(EditUserbtnExecute, true);
-            CanclePopupbtn = new RelayCommand(CanclePopupbtnExecute, true);
-            OkCustomerCreationbtn = new RelayCommand(CreateUserExecute, CanExecuteModifyCustomerCommand);
+            AddUserbtn = new RelayCommand(AddUserbtnExecute);
+            EditUserbtn = new RelayCommand(EditUserbtnExecute);
+            CanclePopupbtn = new RelayCommand(CanclePopupbtnExecute);
+            OkCustomerCreationbtn = new RelayCommand(CreateUserExecute);
 
             //generate default users
             CustomerList.Add(new CustomerMdl("Joe", 23, "AS45 3FG", 1.94));
-            CustomerList.Add(new CustomerMdl("Tom", 18, "GH83 3FH", 12));
+            CustomerList.Add(new CustomerMdl("Tom", 18, "GH83 3FH", 1.2));
             CustomerList.Add(new CustomerMdl("Phoena", 48, "KF07 5GN", 2.09));
         }
 
@@ -60,14 +61,36 @@ namespace ProgrammingTest.ViewModel
         public string PopupHeader { get; private set; } //the header of the popup that states if it's in the add or edit stage
 
         private string nameInput;
-        private int ageInput;
+        private int ageInput; private int localagecopy;
         private string postcodeInput;
-        private double heightInput;
+        private double heightInput; private double localheightcopy;
 
-        public string NameInput { get => nameInput; set { nameInput = value; NotifyPropertyChanged(nameof(NameInput)); } }
-        public int AgeInput { get => ageInput; set { ageInput = value; NotifyPropertyChanged(nameof(AgeInput)); } }
-        public string PostcodeInput { get => postcodeInput; set { postcodeInput = value; NotifyPropertyChanged(nameof(PostcodeInput)); } }
-        public double HeightInput { get => heightInput; set { heightInput = value; NotifyPropertyChanged(nameof(HeightInput)); } }
+        public string NameInput { get => nameInput; set { nameInput = value; NotifyPropertyChanged(nameof(NameInput)); NotifyPropertyChanged(nameof(EnableSaveBtn)); } }
+        public string AgeInput { get => ageInput.ToString(); set
+            {
+                if (int.TryParse(value, out localagecopy))
+                {
+                    ageInput = localagecopy;
+                    NotifyPropertyChanged(nameof(AgeInput));
+                    NotifyPropertyChanged(nameof(EnableSaveBtn));
+                }
+                else { }//else dont update
+            }
+        }
+        public string PostcodeInput { get => postcodeInput; set { postcodeInput = value; NotifyPropertyChanged(nameof(PostcodeInput)); NotifyPropertyChanged(nameof(EnableSaveBtn)); } }
+        public string HeightInput { get => heightInput.ToString(); 
+            set {
+                if (double.TryParse(value, out localheightcopy))
+                {
+                    heightInput = Math.Round(localheightcopy, 2);
+                    NotifyPropertyChanged(nameof(HeightInput));
+                    NotifyPropertyChanged(nameof(EnableSaveBtn));
+                }
+                else { }//else dont update
+            } 
+        }
+
+        public bool EnableSaveBtn { get => CanExecuteModifyCustomerCommand();}
         #endregion
 
         #region Methods
@@ -80,8 +103,8 @@ namespace ProgrammingTest.ViewModel
 
             //clear the display values
             PostcodeInput = NameInput = string.Empty;
-            AgeInput = 0;
-            HeightInput = 0.00;
+            AgeInput = "0";
+            HeightInput = "0.00";
 
             PopupVisibility = true;
             NotifyPropertyChanged(nameof(PopupVisibility));
@@ -96,8 +119,8 @@ namespace ProgrammingTest.ViewModel
             //update the display values
             PostcodeInput = SelectedCustomer.PostCode;
             NameInput = SelectedCustomer.Name;
-            AgeInput = SelectedCustomer.Age;
-            HeightInput = SelectedCustomer.Height;
+            AgeInput = SelectedCustomer.Age.ToString();
+            HeightInput = SelectedCustomer.Height.ToString();
 
             PopupVisibility = true;
             NotifyPropertyChanged(nameof(PopupVisibility));
@@ -106,21 +129,24 @@ namespace ProgrammingTest.ViewModel
         {
             PopupVisibility = false;
             NotifyPropertyChanged(nameof(PopupVisibility));
+
+            SelectedCustomer = null;
+            NotifyPropertyChanged(nameof(SelectedCustomer));
         }
 
         private bool CanExecuteModifyCustomerCommand()
         {
             return (Services.ValidationService.NameValidation(NameInput) &&
-                Services.ValidationService.AgeValidation(AgeInput) &&
+                Services.ValidationService.AgeValidation(int.Parse(AgeInput)) &&
                 Services.ValidationService.PostCodeValidation(PostcodeInput) &&
-                Services.ValidationService.HeightValidation(HeightInput));
+                Services.ValidationService.HeightValidation(double.Parse(HeightInput)));
         }
         public void CreateUserExecute()
         {
             if (!Popuptype) //if editing remove the existing cutomer and replace with a new one, else just add the new one
                 CustomerList.Remove(SelectedCustomer);
 
-            CustomerList.Add(new CustomerMdl(NameInput, AgeInput, PostcodeInput, HeightInput));
+            CustomerList.Add(new CustomerMdl(NameInput, int.Parse(AgeInput), PostcodeInput, double.Parse(HeightInput)));
 
             CanclePopupbtnExecute();
         }

@@ -69,11 +69,11 @@
                 <Label Content="Postcode" Grid.Row="4" Grid.Column="0" />
                 <TextBox Text="{Binding PostcodeInput, Mode=TwoWay}" Grid.Row="4" Grid.Column="2" />
                 
-                <Label Content="Height" Grid.Row="5" Grid.Column="0"/>
+                <Label Content="Height in meters" Grid.Row="5" Grid.Column="0"/>
                 <TextBox Text="{Binding HeightInput, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Row="5" Grid.Column="2" />
 
                 <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Save" FontWeight="Bold" FontSize="14" Padding="5" Margin="10"
+                    <Button Content="Save" FontWeight="Bold" FontSize="14" Padding="5" Margin="10" IsEnabled="{Binding EnableSaveBtn}"
                             Command="{Binding OkCustomerCreationbtn}"/>
                     <Button Content="Cancle" FontWeight="Bold" FontSize="14" Padding="5" Margin="10" Command="{Binding CanclePopupbtn}"/>
                 </StackPanel>
