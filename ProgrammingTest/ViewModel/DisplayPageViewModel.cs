@@ -24,6 +24,7 @@ namespace ProgrammingTest.ViewModel
             AddUserbtn = new RelayCommand(AddUserbtnExecute, true);
             EditUserbtn = new RelayCommand(EditUserbtnExecute, true);
             CanclePopupbtn = new RelayCommand(CanclePopupbtnExecute, true);
+            OkCustomerCreationbtn = new RelayCommand(CreateUserExecute, CanExecuteModifyCustomerCommand);
 
             //generate default users
             CustomerList.Add(new CustomerMdl("Joe", 23, "AS45 3FG", 1.94));
@@ -38,9 +39,10 @@ namespace ProgrammingTest.ViewModel
         public CustomerMdl SelectedCustomer
         {
             get => selectedCustomer;
-            set {
+            set
+            {
                 selectedCustomer = value;
-                if(value != null)
+                if (value != null)
                 {
                     EnableEdit = true;
                     NotifyPropertyChanged(nameof(EnableEdit));
@@ -50,27 +52,25 @@ namespace ProgrammingTest.ViewModel
 
         public bool EnableEdit { get; private set; }
         private bool Popuptype = true; //true for new false of edit
+
         #endregion
 
         #region Popup Properties
         public bool PopupVisibility { get; set; } = false;
         public string PopupHeader { get; private set; } //the header of the popup that states if it's in the add or edit stage
 
-        public string NameInput { get; set; }
-        public int AgeInput { get; set; }
-        public string PostcodeInput { get; set; }
-        public double HeightInput { get; set; }
+        private string nameInput;
+        private int ageInput;
+        private string postcodeInput;
+        private double heightInput;
+
+        public string NameInput { get => nameInput; set { nameInput = value; NotifyPropertyChanged(nameof(NameInput)); } }
+        public int AgeInput { get => ageInput; set { ageInput = value; NotifyPropertyChanged(nameof(AgeInput)); } }
+        public string PostcodeInput { get => postcodeInput; set { postcodeInput = value; NotifyPropertyChanged(nameof(PostcodeInput)); } }
+        public double HeightInput { get => heightInput; set { heightInput = value; NotifyPropertyChanged(nameof(HeightInput)); } }
         #endregion
 
         #region Methods
-        private void UpdateDisplayValues()
-        {
-            NotifyPropertyChanged(nameof(PopupHeader));
-            NotifyPropertyChanged(nameof(NameInput));
-            NotifyPropertyChanged(nameof(AgeInput));
-            NotifyPropertyChanged(nameof(PostcodeInput));
-            NotifyPropertyChanged(nameof(HeightInput));
-        }
         public void AddUserbtnExecute()
         {
             Popuptype = true;
@@ -82,7 +82,6 @@ namespace ProgrammingTest.ViewModel
             PostcodeInput = NameInput = string.Empty;
             AgeInput = 0;
             HeightInput = 0.00;
-            UpdateDisplayValues();
 
             PopupVisibility = true;
             NotifyPropertyChanged(nameof(PopupVisibility));
@@ -99,7 +98,6 @@ namespace ProgrammingTest.ViewModel
             NameInput = SelectedCustomer.Name;
             AgeInput = SelectedCustomer.Age;
             HeightInput = SelectedCustomer.Height;
-            UpdateDisplayValues();
 
             PopupVisibility = true;
             NotifyPropertyChanged(nameof(PopupVisibility));
@@ -110,16 +108,22 @@ namespace ProgrammingTest.ViewModel
             NotifyPropertyChanged(nameof(PopupVisibility));
         }
 
+        private bool CanExecuteModifyCustomerCommand()
+        {
+            return (Services.ValidationService.NameValidation(NameInput) &&
+                Services.ValidationService.AgeValidation(AgeInput) &&
+                Services.ValidationService.PostCodeValidation(PostcodeInput) &&
+                Services.ValidationService.HeightValidation(HeightInput));
+        }
+        public void CreateUserExecute()
+        {
+            if (!Popuptype) //if editing remove the existing cutomer and replace with a new one, else just add the new one
+                CustomerList.Remove(SelectedCustomer);
+
+            CustomerList.Add(new CustomerMdl(NameInput, AgeInput, PostcodeInput, HeightInput));
+
+            CanclePopupbtnExecute();
+        }
         #endregion
     }
 }
-/*
-        private bool CanExecuteSaveCommand()
-        {
-            return !string.IsNullOrEmpty(LastName);
-        }
-        public void SaveExecute()
-        {
-            Person.Save(_newPerson);
-        }
- */

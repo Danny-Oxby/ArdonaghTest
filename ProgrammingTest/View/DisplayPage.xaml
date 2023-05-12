@@ -35,7 +35,7 @@
             <Button Content="Edit" FontWeight="Bold" FontSize="20" Padding="5" Margin="10" IsEnabled="{Binding EnableEdit}" Command="{Binding Path=EditUserbtn}"/>
         </StackPanel>
 
-        <Popup Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="500" Height="500"
+        <Popup Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="300" Height="200"
                Placement="Relative" IsOpen="{Binding PopupVisibility}">
             <Grid Background="White">
                 <!--#region grid defnitions-->
@@ -73,7 +73,8 @@
                 <TextBox Text="{Binding HeightInput, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Row="5" Grid.Column="2" />
 
                 <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Save" FontWeight="Bold" FontSize="14" Padding="5" Margin="10"/>
+                    <Button Content="Save" FontWeight="Bold" FontSize="14" Padding="5" Margin="10"
+                            Command="{Binding OkCustomerCreationbtn}"/>
                     <Button Content="Cancle" FontWeight="Bold" FontSize="14" Padding="5" Margin="10" Command="{Binding CanclePopupbtn}"/>
                 </StackPanel>
                 <!--#endregion-->
